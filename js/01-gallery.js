@@ -2,9 +2,11 @@ import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
 const galleryEl = document.querySelector(".gallery");
+//создание разметки галереи
 const cardsMarkup = createImgCardsMarkup(galleryItems);
-
+//обработка события при клике
 galleryEl.addEventListener("click", onGalleryClick);
+//вставка галереи на страницу
 galleryEl.insertAdjacentHTML("beforeend", cardsMarkup);
 
 function createImgCardsMarkup(galleryItems){
@@ -38,19 +40,19 @@ function onGalleryClick(event){
     window.addEventListener('keydown', onEscKeyPress);
 };
 
-let instance;
+let lightbox;
 
 function openModalLightbox(event) {
-    instance = basicLightbox.create(`
+    lightbox = basicLightbox.create(`
 		<img src="${event.target.dataset.source}">
 	`);
-    instance.show();
+    lightbox.show();
 };
 
 
 function onEscKeyPress(event) {
     if (event.code === 'Escape') {
-        instance.close();
+        lightbox.close();
         window.removeEventListener('keydown', onEscKeyPress);
     };
 };
