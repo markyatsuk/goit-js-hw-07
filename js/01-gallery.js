@@ -1,31 +1,12 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
+
 const galleryEl = document.querySelector(".gallery");
 const cardsMarkup = createImgCardsMarkup(galleryItems);
 
 galleryEl.addEventListener("click", onGalleryClick);
 galleryEl.insertAdjacentHTML("beforeend", cardsMarkup);
 
-
-function onGalleryClick(event){
-    // event.preventDefault();
-    const isImgEl = event.target.classList.contains("gallery__image");
-
-    if(!isImgEl){
-        return;
-    }
-
-    const urlOriginal = event.target.dataset.source;
-    console.log(urlOriginal);
-    const getAttribute = event.target.getAttribute("src");
-    const isBigImg = getAttribute == urlOriginal ? true : false;
-    console.log(isBigImg)
-}
-
-
-
-
-// console.log(galleryItems);
 function createImgCardsMarkup(galleryItems){
     
     return galleryItems.map(({preview, original, description}) => {
@@ -42,4 +23,34 @@ function createImgCardsMarkup(galleryItems){
         </div>
         `;
     }).join('');
-}
+};
+
+//делегирование
+function onGalleryClick(event){
+    event.preventDefault();
+    const isImgEl = event.target.classList.contains("gallery__image");
+
+    if(!isImgEl){
+        return;
+    }
+
+    openModalLightbox(event);
+    window.addEventListener('keydown', onEscKeyPress);
+};
+
+let instance;
+
+function openModalLightbox(event) {
+    instance = basicLightbox.create(`
+		<img src="${event.target.dataset.source}">
+	`);
+    instance.show();
+};
+
+
+function onEscKeyPress(event) {
+    if (event.code === 'Escape') {
+        instance.close();
+        window.removeEventListener('keydown', onEscKeyPress);
+    };
+};
